@@ -43,27 +43,29 @@ OS_SEM sem_newGen;
 volatile BOOL ADCRead = false;
 int sleep_flag = 0;
 
+//This is used to create an 8x8 white pixel with a 1 pixel wide grey border. 
  unsigned short deadCell[] = { LG, LG, LG, LG, LG, LG, LG, LG, LG, LG,
-																LG, WT, WT, WT, WT, WT, WT, WT, WT, LG,
-																LG, WT, WT, WT, WT, WT, WT, WT, WT, LG,
-																LG, WT, WT, WT, WT, WT, WT, WT, WT, LG,
-																LG, WT, WT, WT, WT, WT, WT, WT, WT, LG,
-																LG, WT, WT, WT, WT, WT, WT, WT, WT, LG,
-																LG, WT, WT, WT, WT, WT, WT, WT, WT, LG,
-																LG, WT, WT, WT, WT, WT, WT, WT, WT, LG,
-																LG, WT, WT, WT, WT, WT, WT, WT, WT, LG,	
-																LG, LG, LG, LG, LG, LG, LG, LG, LG, LG};
+				LG, WT, WT, WT, WT, WT, WT, WT, WT, LG,
+				LG, WT, WT, WT, WT, WT, WT, WT, WT, LG,
+				LG, WT, WT, WT, WT, WT, WT, WT, WT, LG,
+				LG, WT, WT, WT, WT, WT, WT, WT, WT, LG,
+				LG, WT, WT, WT, WT, WT, WT, WT, WT, LG,
+				LG, WT, WT, WT, WT, WT, WT, WT, WT, LG,
+				LG, WT, WT, WT, WT, WT, WT, WT, WT, LG,
+				LG, WT, WT, WT, WT, WT, WT, WT, WT, LG,	
+				LG, LG, LG, LG, LG, LG, LG, LG, LG, LG};
 
+//This is used to make an 8x8 dead picel with a 1 pixel wide grey border.
 	unsigned short livingCell[] = { LG, LG, LG, LG, LG, LG, LG, LG, LG, LG,
-																	LG, BK, BK, BK, BK, BK, BK, BK, BK, LG,
-																	LG, BK, BK, BK, BK, BK, BK, BK, BK, LG,
-																	LG, BK, BK, BK, BK, BK, BK, BK, BK, LG,
-																	LG, BK, BK, BK, BK, BK, BK, BK, BK, LG,
-																	LG, BK, BK, BK, BK, BK, BK, BK, BK, LG,
-																	LG, BK, BK, BK, BK, BK, BK, BK, BK, LG,
-																	LG, BK, BK, BK, BK, BK, BK, BK, BK, LG,
-																	LG, BK, BK, BK, BK, BK, BK, BK, BK, LG,	
-																	LG, LG, LG, LG, LG, LG, LG, LG, LG, LG};
+					LG, BK, BK, BK, BK, BK, BK, BK, BK, LG,
+					LG, BK, BK, BK, BK, BK, BK, BK, BK, LG,
+					LG, BK, BK, BK, BK, BK, BK, BK, BK, LG,
+					LG, BK, BK, BK, BK, BK, BK, BK, BK, LG,
+					LG, BK, BK, BK, BK, BK, BK, BK, BK, LG,
+					LG, BK, BK, BK, BK, BK, BK, BK, BK, LG,
+					LG, BK, BK, BK, BK, BK, BK, BK, BK, LG,
+					LG, BK, BK, BK, BK, BK, BK, BK, BK, LG,	
+					LG, LG, LG, LG, LG, LG, LG, LG, LG, LG};
  
  
  
@@ -164,7 +166,7 @@ void LED_off (unsigned char led) {
 
 
 /*----------------------------------------------------------------------------
-  Task 1 'LEDs': Cycle through LEDs
+  Task 'LEDs': Cycle through LEDs
  *---------------------------------------------------------------------------*/
 __task void led (void) {
 	int num_led = 3; //the number of LEDs to cycle through
@@ -189,7 +191,7 @@ __task void led (void) {
 }
 
 /*----------------------------------------------------------------------------
-  Task 2 'keyread': process key stroke from int0 push button
+  Task 'keyread': process key stroke from int0 push button
  *---------------------------------------------------------------------------*/
 __task void keyread (void) {
 
@@ -203,31 +205,22 @@ __task void keyread (void) {
 	
 
 /*----------------------------------------------------------------------------
-  Task 3 'ADC': Read potentiometer
+  Task 'ADC': Read potentiometer
  *---------------------------------------------------------------------------*/
-/*NOTE: You need to complete this function*/
 
 __task void adc (void) {
   for (;;) {
 		ADC_ConversionStart();
 		}
-
+		//As mentioned in the readme file, this is one of the functions
+		//that is integrated in a seperate file not included here.
   }
 
 
-/*----------------------------------------------------------------------------
-  Task 4 'joystick': process an input from the joystick
- *---------------------------------------------------------------------------*/
-/*NOTE: You need to complete this function*/
-__task void joystick (void) {
-  for (;;) {
-
-  }
-}
 
 
 /*----------------------------------------------------------------------------
-  Task 5 'lcd': LCD Control task
+  Task 'lcd': LCD Control task
  *---------------------------------------------------------------------------*/
 __task void lcd (void) {
 
@@ -407,9 +400,8 @@ __task void LEDc (void){
 }
 
 /*----------------------------------------------------------------------------
-  Task 6 'init': Initialize
+  Task 'init': Initialize
  *---------------------------------------------------------------------------*/
-/* NOTE: Add additional initialization calls for your tasks here */
 __task void init (void) {
 
   os_mut_init(mut_GLCD);
@@ -425,11 +417,8 @@ __task void init (void) {
 	GLCD_DisplayString(5,4,__FI,"Game of Life");
 	os_dly_wait(100);
 	
-  //t_led 	 = os_tsk_create (led, 0);		 /* start the led task               */
-	
 	os_tsk_create (adc, 0);		 /* start the adc task               */
-	//t_jst		 = os_tsk_create (joystick, 0);     /* start the joystick task           */
-  //t_lcd    = os_tsk_create (lcd, 0);     /* start task lcd                   */
+	
 	
 	//Acorn
 	orgLife[10][10] = 1;
